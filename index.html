@@ -1,1 +1,63 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutation Sim</title>
+</head>
+<body>
+    <style>
+        *{
+            text-align: center;
+        }
+        #mut{
+            font-size: 30pt;
+        }
+</style>
+    <h1 id="spider">&#128375; &#x1F577;</h1>
+    <h1 id="bc">Body Color: gray</h1>
+    <h1 id="ss">Silk Strength: medium</h1>
+    <button id="mut">Make Mutation</button>
+    <script>
+        var strengths = ["high", "medium", "low"]
+        var bc  = ["gray", "green", "blue", "black"]
+        var muts = ["substitution","substitution","substitution","substitution","substitution","substitution", "frameshift"]
+        var currentS = "medium";
+        var currentC = "gray";
+        var mut = document.getElementById("mut");
+        mut.onclick = ()=> {
+            var type = muts[Math.floor(Math.random()* muts.length)];
+            if(type === "frameshift"){
+                alert("A frameshift happened.")
+                let type = prompt("Choose a gene (silk strength or body color) to shift.").toLowerCase();
+                if(type === "silk strength"){
+                    var strong = strengths.filter(s => s != currentS)
+                    currentS = strong[Math.floor(Math.random() * 2)]
+                    document.getElementById("ss").innerHTML = "Silk Strength: " + currentS;
+                    alert("Silk strength was changed to " + currentS);
+                    if(currentS === "low"){
+                        alert("Silk strength was too low. The spider died. Reload the tab to try again.");
+                        mut.onclick = null;
+                    }
+                }
+                if(type === "body color"){
+                    var color = bc.filter(s => s != currentC)
+                    currentC = color[Math.floor(Math.random() * 3)]
+                    document.getElementById("bc").innerHTML = "Body Color: " + currentC;
+                    document.getElementById("spider").style.color = currentC;
+                    alert("Body color was changed to " + currentC);
+                }
+            }
+            else{
+                alert("subsitution happened.");
+                if(Math.floor(Math.random() * 20) === 3){
+                    alert("An amino acid changed.");
+                }
+                else{
+                    alert("Nothing happened to the amino acids. ")
+                }
+            }
+        }
+    </script>
+</body>
+</html>
