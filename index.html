@@ -1,79 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mutation Sim</title>
 </head>
+
 <body>
     <style>
-        *{
+        * {
             text-align: center;
             position: absolute;
             width: 40vw;
         }
-        #mut{
+
+        #mut {
             font-size: 20pt;
         }
-        #spider{
+
+        #spider {
             scale: 20;
             left: 30vw;
         }
-        #bc{
+
+        #bc {
             top: 300px;
             left: 30vw;
         }
-        #ss{
+
+        #ss {
             top: 400px;
             left: 30vw;
         }
-        #mut{
+
+        #mut {
             top: 500px;
             left: 30vw;
         }
-</style>
+    </style>
     <h1 id="spider">&#9786;</h1>
     <h1 id="bc">Body Color: gray</h1>
     <h1 id="ss">Head Size: small</h1>
     <button id="mut">Make Mutation</button>
+    <button hidden id="re">Reproduce</button>
+    <button id="bre">Mate</button>
+
     <script>
         var strengths = ["small", "normal", "large"]
-        var bc  = ["gray", "green", "blue", "black"]
+        var bc = ["gray", "green", "blue", "black"]
         var muts = ["substitution", "frameshift"]
         var currentS = "small";
         var currentC = "gray";
         var mut = document.getElementById("mut");
-        mut.onclick = ()=> {
-            var type = muts[Math.floor(Math.random()* muts.length)];
-            if(type === "frameshift"){
+        var repro = document.getElementById("re");
+        var breed = document.getElementById("bre");
+        var p2, offspring;
+        var latest = [];
+        var father = document.querySelector("#spider");
+        breed.onclick = () => {
+            p2 = document.getElementById("spider").cloneNode();
+            p2.style.fontSize = strengths[Math.floor(Math.random() * strengths.length)];
+            p2.style.color = bc[Math.floor(Math.random() * bc.length)];
+            document.body.insertBefore(p2, document.getElementById("spider"));
+            repro.hidden = false;
+        }
+        repro.onclick = () => {
+            latest = [];
+            for (let i = 0; i < 4; i++) {
+                offspring = father.cloneNode();
+                offspring.onclick = (e) => {
+                    latest.forEach(l=> {
+                        l.style.border = "";
+                    });
+                    e.target.style.border = "2px solid black";
+                    father = e.target;
+                }
+                latest.push(offspring);
+                var colors = [p2.style.color, offspring.style.color];
+                var sizes = [p2.style.fontSize, offspring.style.fontSize];
+                offspring.style.fontSize = sizes[Math.floor(Math.random() * 2)];
+                offspring.style.color = colors[Math.floor(Math.random() * 2)];
+                document.body.insertBefore(offspring, document.getElementById("bc"));
+                repro.hidden = true;
+            }
+        }
+        mut.onclick = () => {
+            var type = muts[Math.floor(Math.random() * muts.length)];
+            if (type === "frameshift") {
                 alert("A frameshift happened.")
                 let type = prompt("Choose a gene (head size or body color) to alter.").toLowerCase();
-                if(type === "head size"){
+                if (type === "head size") {
                     var strong = strengths.filter(s => s != currentS)
                     currentS = strong[Math.floor(Math.random() * 2)]
                     document.getElementById("ss").innerHTML = "Head Size: " + currentS;
                     document.getElementById("spider").style.fontSize = currentS;
                     alert("Head Size was changed to " + currentS);
-                    
+
                 }
-                if(type === "body color"){
+                if (type === "body color") {
                     var color = bc.filter(s => s != currentC)
                     currentC = color[Math.floor(Math.random() * 3)]
                     document.getElementById("bc").innerHTML = "Body Color: " + currentC;
                     document.getElementById("spider").style.color = currentC;
                     alert("Body color was changed to " + currentC);
+                    if (Math.floor(Math.random() * 5) === 3) {
+                        alert("This mutation can be passed down.")
+                    }
                 }
             }
-            else{
+            else {
                 alert("subsitution happened.");
-                if(Math.floor(Math.random() * 20) === 3){
+                if (Math.floor(Math.random() * 20) === 3) {
                     alert("An amino acid changed.");
                 }
-                else{
+                else {
                     alert("Nothing happened to the amino acids. ")
                 }
             }
         }
     </script>
 </body>
+
 </html>
