@@ -10,7 +10,9 @@
 <body>
     <style>
         * {
+            text-align: center;
             position: relative;
+            width: 40vw;
         }
 
         #mut {
@@ -19,8 +21,7 @@
 
         #spider {
             scale: 5;
-            position: relative;
-            margin: 20px;
+            left: 30vw;
         }
         #bc {
             top: 300px;
@@ -57,16 +58,15 @@
         var latest = [];
         var father = document.querySelector("#spider");
         breed.onclick = () => {
-            p2 = document.getElementById("spider").cloneNode();
+            p2 = father.cloneNode(true);
             p2.style.fontSize = strengths[Math.floor(Math.random() * strengths.length)];
             p2.style.color = bc[Math.floor(Math.random() * bc.length)];
             document.body.insertBefore(p2, document.getElementById("spider"));
             repro.hidden = false;
         }
         repro.onclick = () => {
-            latest = [];
             for (let i = 0; i < 4; i++) {
-                offspring = father.cloneNode();
+                offspring = father.cloneNode(true);
                 offspring.onclick = (e) => {
                     latest.forEach(l=> {
                         l.style.border = "";
