@@ -61,7 +61,7 @@
             p2 = father.cloneNode(true);
             p2.style.fontSize = strengths[Math.floor(Math.random() * strengths.length)];
             p2.style.color = bc[Math.floor(Math.random() * bc.length)];
-            document.body.insertBefore(p2, document.getElementById("spider"));
+            document.body.insertBefore(p2, father);
             repro.hidden = false;
         }
         repro.onclick = () => {
@@ -92,7 +92,7 @@
                     var strong = strengths.filter(s => s != currentS)
                     currentS = strong[Math.floor(Math.random() * 2)]
                     document.getElementById("ss").innerHTML = "Head Size: " + currentS;
-                    document.getElementById("spider").style.fontSize = currentS;
+                    father.style.fontSize = currentS;
                     alert("Head Size was changed to " + currentS);
 
                 }
@@ -100,7 +100,7 @@
                     var color = bc.filter(s => s != currentC)
                     currentC = color[Math.floor(Math.random() * 3)]
                     document.getElementById("bc").innerHTML = "Body Color: " + currentC;
-                    document.getElementById("spider").style.color = currentC;
+                    father.style.color = currentC;
                     alert("Body color was changed to " + currentC);
                     if (Math.floor(Math.random() * 5) === 3) {
                         alert("This mutation can be passed down.")
